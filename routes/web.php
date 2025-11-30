@@ -34,4 +34,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('listings/create', CreateListing::class)->name('listings.create');
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('listings/create', CreateListing::class)->name('listings.create');
+});
+

@@ -20,16 +20,19 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="h-full antialiased">
+<body class="h-full antialiased bg-neutral-100">
 
     <div class="min-h-full">
         @include('partials.header')
 
         <div class="py-10">
             <div class="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-8 lg:px-8">
-                @include('partials.sidebar')
+                <div class="hidden lg:col-span-3 lg:block xl:col-span-2">
+                    @include('partials.sidebar')
+                </div>
 
-                <main class="lg:col-span-9 xl:col-span-6">
+
+                <main class="lg:col-span-9 xl:col-span-10">
                     {{ $slot }}
                 </main>
             </div>

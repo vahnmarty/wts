@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('listing_type')->nullable()->comment('Buying | Selling | Swap');
+            $table->string('listing_type')->nullable()->comment('Buy | Sell | Swap');
             $table->string('title');
             $table->json('description');
             $table->string('price_type')->comment('FIXED, RANGE')->default('FIXED');
