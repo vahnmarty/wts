@@ -23,17 +23,9 @@
 <body class="h-full antialiased bg-neutral-100">
 
     <div class="min-h-full">
-        @include('partials.header')
-
-        <div class="py-10">
-            <div class="mx-auto max-w-3xl sm:px-6  lg:max-w-7xl  lg:px-8">
-
-
-                <main class="px-4 sm:px-0">
-                    {{ $slot }}
-                </main>
-            </div>
-        </div>
+        <main>
+            {{ $slot }}
+        </main>
     </div>
 
     @livewire('notifications')

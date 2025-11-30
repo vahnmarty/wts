@@ -26,10 +26,13 @@
         @include('partials.header')
 
         <div class="py-10">
-            <div class="mx-auto max-w-3xl sm:px-6  lg:max-w-7xl  lg:px-8">
+            <div class="mx-auto max-w-3xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-8 lg:px-8">
+                <div class="hidden lg:col-span-3 lg:block xl:col-span-2">
+                    @include('partials.sidebar')
+                </div>
 
 
-                <main class="px-4 sm:px-0">
+                <main class="lg:col-span-9 xl:col-span-10 px-4 sm:px-0">
                     {{ $slot }}
                 </main>
             </div>

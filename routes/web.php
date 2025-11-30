@@ -7,6 +7,7 @@ use App\Livewire\Listing\EditListing;
 use App\Livewire\Listing\ShowListing;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Listing\CreateListing;
+use App\Livewire\Listing\ListingSearchResults;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['middleware' => 'auth'], function(){
     Route::get('listings/create', CreateListing::class)->name('listings.create');
     Route::get('listings/{id}/edit', EditListing::class)->name('listings.edit');
+    Route::get('listings/search', ListingSearchResults::class)->name('listings.search');
     Route::get('listings/{id}/{slug?}', ShowListing::class)->name('listings.show');
 });
 

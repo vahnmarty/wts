@@ -12,13 +12,7 @@
             </div>
             <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                 <div class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
-                    <div class="grid w-full grid-cols-1">
-                        <input type="search" name="search" placeholder="Search"
-                            class="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pl-10 pr-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-rose-500 sm:text-sm/6" />
-
-                        <x-filament::icon icon="heroicon-o-magnifying-glass"
-                            class="pointer-events-none col-start-1 row-start-1 ml-3 size-10 size-5 flex-shrink-0 self-center text-gray-400 text-neutral-200 md:size-16" />
-                    </div>
+                    @livewire('portal.search-listing')
                 </div>
             </div>
             <div class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
