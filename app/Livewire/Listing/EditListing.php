@@ -25,15 +25,24 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea as CharTextarea;
 use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput as CharTextInput;
 
-class CreateListing extends Component implements HasSchemas
+class EditListing extends Component implements HasSchemas
 {
     use InteractsWithSchemas;
 
     public ?array $data = [];
 
-    public function mount(): void
+    public Listing $listing;
+
+    public function mount($id): void
     {
-        $this->form->fill();
+        $listing = Listing::findOrFail($id);
+
+        $this->form->fill($listing->toArray());
+
+        $this->authorize('view', $listing);
+
+        $this->listing = $listing;
+
     }
 
     public function form(Schema $schema): Schema
@@ -109,16 +118,15 @@ class CreateListing extends Component implements HasSchemas
                     ->schema([
                         Checkbox::make('is_legal')
                             ->label("I confirm that the item I’m listing is legal in the Philippines.")
-                            //->accepted()
-                            ->required()
+                            ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('is_legit')
                             ->label("I certify that this item is not counterfeit, stolen, or prohibited.")
-                            ->required()
+                            ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('terms')
                             ->label("I agree that violating these terms may result in account suspension.")
-                            ->required()
+                            ->accepted()
                             ->dehydrated(false),
                     ])
 
@@ -137,7 +145,8 @@ class CreateListing extends Component implements HasSchemas
         $listing->status = ListingStatus::OPEN;
         $listing->save();
 
-        return redirect()->route('listings.show', $listing->slug);
+
+        return redirect()->route('listings.show', $listing->id);
     }
 
     public function saveDraft()
@@ -170,8 +179,7 @@ class CreateListing extends Component implements HasSchemas
 
     public function save($data): Listing
     {
-        $listing = new Listing;
-        $listing->user_id = Auth::id();
+        $listing = $this->listing;
         $listing->fill($data);
         $listing->save();
 
@@ -181,6 +189,6 @@ class CreateListing extends Component implements HasSchemas
 
     public function render()
     {
-        return view('livewire.listing.create-listing');
+        return view('livewire.listing.edit-listing');
     }
 }

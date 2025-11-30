@@ -1,7 +1,7 @@
 <div>
 
     <header>
-        <h1 class="text-2xl font-bold">Create Listing</h1>
+        <h1 class="text-2xl font-bold">Edit Listing</h1>
         <p class="mt-1 text-sm text-neutral-700">Post something you can buy, sell or swap.</p>
     </header>
 
@@ -15,7 +15,7 @@
                         Save as Draft
                     </x-filament::button>
                     <x-filament::button wire:click="submit">
-                        Create Listing
+                        Update Listing
                     </x-filament::button>
                 </div>
             </form>

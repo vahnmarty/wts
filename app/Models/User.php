@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return url('img/avatar.png');
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

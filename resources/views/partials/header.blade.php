@@ -1,4 +1,6 @@
-<header class="shadow-xs bg-white lg:static lg:overflow-y-visible">
+<header x-data="{ open: false }" x-init="$watch('open', value => {
+    document.body.classList.toggle('overflow-hidden', value)
+})" class="shadow-xs bg-white lg:static lg:overflow-y-visible">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
             <div class="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
@@ -19,10 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div x-data="{ open: false }" x-init="$watch('open', value => {
-                document.body.classList.toggle('overflow-hidden', value)
-            })"
-                class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
+            <div class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
                 <!-- Mobile menu button -->
                 <button @click="open = !open" type="button" aria-expanded="false"
                     class="focus:outline-hidden relative -mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-rose-500">
@@ -61,6 +60,10 @@
                             class="size-8 rounded-full" />
                     </x-slot>
 
+                    <form action="{{ route('logout') }}" method="POST" id="form_logout" class="hidden">
+                        @csrf
+                    </form>
+
                     <x-filament::dropdown.list>
                         <x-filament::dropdown.list.item>
                             Your Profile
@@ -68,7 +71,7 @@
                         <x-filament::dropdown.list.item>
                             Settings
                         </x-filament::dropdown.list.item>
-                        <x-filament::dropdown.list.item>
+                        <x-filament::dropdown.list.item @click="document.querySelector('#form_logout').submit()">
                             Sign out
                         </x-filament::dropdown.list.item>
                     </x-filament::dropdown.list>
@@ -83,7 +86,7 @@
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
-    <nav aria-label="Global" class="lg:hidden">
+    <nav aria-label="Global" class="min-h-screen lg:hidden" x-show="open">
         <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
             <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
             <a href="#" aria-current="page"

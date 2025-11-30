@@ -3,6 +3,8 @@
 use Livewire\Volt\Volt;
 use App\Livewire\HomePage;
 use Laravel\Fortify\Features;
+use App\Livewire\Listing\EditListing;
+use App\Livewire\Listing\ShowListing;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Listing\CreateListing;
 
@@ -36,5 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('listings/create', CreateListing::class)->name('listings.create');
+    Route::get('listings/{id}/edit', EditListing::class)->name('listings.edit');
+    Route::get('listings/{id}/{slug?}', ShowListing::class)->name('listings.show');
 });
 
