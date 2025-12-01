@@ -17,6 +17,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Fieldset;
+use App\Livewire\Listing\ListingFormTrait;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Schemas\Components\Utilities\Get;
@@ -29,101 +30,13 @@ class CreateListing extends Component implements HasSchemas
 {
     use InteractsWithSchemas;
 
+    use ListingFormTrait;
+
     public ?array $data = [];
 
     public function mount(): void
     {
         $this->form->fill();
-    }
-
-    public function form(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                Grid::make(4)
-                    ->schema([
-                        Select::make('listing_type')
-                        ->disableLabel()
-                        ->options([
-                            'Sell' => 'I am Selling',
-                            'Buy' => 'I am Buying',
-                            'Swap' => 'I want to Swap'
-                        ])
-                        ->default('Sell')
-                        ->required(),
-                    Select::make('category_id')
-                        ->disableLabel()
-                        ->options(Category::get()->pluck('name', 'id'))
-                        ->required()
-                        ->columnSpan(3)
-                        ->placeholder('Concert Tickets, Sneakers, etc...'),
-                    ]),
-
-                CharTextInput::make('title')
-                    ->required()
-                    ->maxLength(100)
-                    ->characterLimit(100),
-                CharTextarea::make('description')
-                    ->required()
-                    ->maxLength(1024)
-                    ->characterLimit(1024)
-                    ->rows(5),
-                Grid::make(4)
-                    ->schema([
-                        Select::make('price_type')
-                            ->options([
-                                'FIXED' => 'Fixed Price',
-                                'RANGE' => 'Range Price',
-                                'MONTHLY' => 'Monthly Subscription'
-                            ])
-                            ->default('FIXED')
-                            ->required()
-                            ->live(),
-                        TextInput::make('start_price')
-                            ->numeric()
-                            ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'FIXED')
-                            ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'RANGE'),
-                        TextInput::make('min_price')
-                            ->numeric()
-                            ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
-                            ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
-                        TextInput::make('max_price')
-                            ->numeric()
-                            ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
-                            ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
-                    ]),
-                TextInput::make('reference_url')
-                    ->label('Reference URL')
-                    ->url()
-                    ->helperText('If you have posted this on social media, you can copy the link here.'),
-                SpatieMediaLibraryFileUpload::make('attachment')
-                    ->image(),
-                Fieldset::make('Be sure to agree with these term(s).')
-                    ->columns(1)
-                    ->schema([
-                        Checkbox::make('is_legal')
-                            ->label("I confirm that the item I’m listing is legal in the Philippines.")
-                            //->accepted()
-                            ->required()
-                            ->dehydrated(false),
-                        Checkbox::make('is_legit')
-                            ->label("I certify that this item is not counterfeit, stolen, or prohibited.")
-                            ->required()
-                            ->dehydrated(false),
-                        Checkbox::make('terms')
-                            ->label("I agree that violating these terms may result in account suspension.")
-                            ->required()
-                            ->dehydrated(false),
-                    ])
-
-            ])
-            ->statePath('data');
     }
 
     public function submit()
@@ -137,7 +50,7 @@ class CreateListing extends Component implements HasSchemas
         $listing->status = ListingStatus::OPEN;
         $listing->save();
 
-        return redirect()->route('listings.show', $listing->slug);
+        return redirect()->route('listings.show', $listing->id);
     }
 
     public function saveDraft()

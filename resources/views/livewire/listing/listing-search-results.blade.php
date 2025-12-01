@@ -58,8 +58,11 @@
                         <div class="flex space-x-6">
                             <p>Offers: <strong>Less than 5</strong></p>
                         </div>
-                        <div class="flex text-sm">
+                        <div class="flex gap-2 text-sm">
                             <x-filament::button>
+                                Message {{ $listing->getHost() }}
+                            </x-filament::button>
+                            <x-filament::button tag="a" href="{{ route('deals.create', $listing->id) }}">
                                 Make a Deal
                             </x-filament::button>
                         </div>

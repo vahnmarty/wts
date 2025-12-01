@@ -12,13 +12,24 @@
                             <a href="#" class="hover:underline">{{ $listing->user->getName() }}</a>
                             <x-filament::icon icon="heroicon-s-check-circle" class="text-info-600 size-10" />
                         </p>
-                        <p class="text-sm text-gray-500">
+                        <div class="flex flex-row items-center gap-4 text-sm text-gray-500">
                             <a href="#" class="hover:underline">
                                 <time datetime="{{ $listing->published_at?->diffForHumans() }}">
                                     {{ $listing->published_at?->diffForHumans() }}
                                 </time>
                             </a>
-                        </p>
+                            @if ($listing->isPrivate())
+                                <div class="inline-flex items-center space-x-1">
+                                    <x-filament::icon icon="heroicon-o-lock-closed" class="size-4 text-neutral-400" />
+                                    <span class="text-xs">Private</span>
+                                </div>
+                            @else
+                                <div class="inline-flex items-center space-x-1">
+                                    <x-filament::icon icon="heroicon-o-globe-alt" class="size-4 text-neutral-400" />
+                                    <span class="text-xs">Public</span>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <x-filament::dropdown>
                         <x-slot name="trigger">
@@ -98,14 +109,24 @@
                 </div>
                 <div class="flex text-sm">
                     <span class="inline-flex items-center text-sm">
-                        <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                            <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true"
-                                class="size-5">
-                                <path
-                                    d="M13 4.5a2.5 2.5 0 1 1 .702 1.737L6.97 9.604a2.518 2.518 0 0 1 0 .792l6.733 3.367a2.5 2.5 0 1 1-.671 1.341l-6.733-3.367a2.5 2.5 0 1 1 0-3.475l6.733-3.366A2.52 2.52 0 0 1 13 4.5Z" />
-                            </svg>
-                            <span class="font-medium text-gray-900">Share</span>
-                        </button>
+                        <x-filament::dropdown>
+                            <x-slot name="trigger">
+                                <x-filament::button icon="heroicon-o-share" color="gray" size="md">
+                                    Share
+                                </x-filament::button>
+                            </x-slot>
+
+                            <x-filament::dropdown.list>
+                                <x-filament::dropdown.list.item icon="heroicon-m-link">
+                                    Copy Link
+                                </x-filament::dropdown.list.item>
+                                <x-filament::dropdown.list.item icon="heroicon-o-globe-alt" tag="a"
+                                    href="{{ route('listings.view', $listing->uuid) }}" target="_blank">
+                                    View as Public
+                                </x-filament::dropdown.list.item>
+                            </x-filament::dropdown.list>
+
+                        </x-filament::dropdown>
                     </span>
                 </div>
             </div>

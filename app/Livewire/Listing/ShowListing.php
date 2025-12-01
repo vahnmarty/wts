@@ -9,13 +9,10 @@ class ShowListing extends Component
 {
     public Listing $listing;
 
-    public function mount($id, $slug = null)
+    public function mount($id)
     {
         $listing = Listing::findOrFail($id);
 
-        if(!$slug){
-            return redirect()->route('listings.show', ['id' => $listing->id, 'slug' => $listing->slug]);
-        }
 
         $this->authorize('viewAny', $listing);
 

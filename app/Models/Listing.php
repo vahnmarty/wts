@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ListingType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
@@ -44,6 +45,25 @@ class Listing extends Model
         if($this->price_type == 'RANGE'){
             return $this->min_price . ' - ' . $this->max_price;
         }
+    }
+
+    public function getHost()
+    {
+        if($this->listing_type == ListingType::SELL){
+            return 'Seller';
+        }
+
+        return 'Buyer';
+    }
+
+    public function isPrivate()
+    {
+        return $this->privacy == 'Private';
+    }
+
+    public function isPublic()
+    {
+        return $this->privacy == 'Public';
     }
 
 }

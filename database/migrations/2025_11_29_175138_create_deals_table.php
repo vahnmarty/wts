@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('listing_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('buyer_id');
-            $table->foreign('buyer_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
             $table->double('offer_price', 15, 2)->nullable();
             $table->string('status')->nullable();
+            $table->json('message')->nullable();
             $table->timestamps();
+            $table->timestamp('confirmed_at')->nullable();
+            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('buyer_accepted_at')->nullable();
         });
     }
 

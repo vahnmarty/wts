@@ -16,16 +16,16 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('listing_type')->nullable()->comment('Buy | Sell | Swap');
+            $table->string('listing_type')->nullable()->comment('buy, sell, swap');
             $table->string('title')->nullable();
             $table->string('slug')->nullable()->unique();
             $table->json('description')->nullable();
-            $table->string('price_type')->comment('FIXED, RANGE')->default('FIXED');
+            $table->string('price_type')->comment('fixed, range')->default('fixed');
             $table->double('start_price', 15, 2)->nullable();
             $table->double('min_price')->nullable();
             $table->double('max_price')->nullable();
             $table->string('reference_url')->nullable();
-            $table->string('status')->nullable()->comment('DRAFT, OPEN, CLOSED, REPORTED, COMPLETED');
+            $table->string('status')->nullable()->comment('draft , open, closed, reported, completed');
             $table->timestamps();
             $table->softDeletes();
             $table->timestamp('published_at')->nullable();
@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('close_reason')->nullable();
             $table->integer('views_count')->nullable();
             $table->integer('likes_count')->nullable();
+            $table->string('privacy')->default('public')->comment('public, private');
         });
     }
 

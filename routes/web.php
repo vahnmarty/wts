@@ -3,8 +3,11 @@
 use Livewire\Volt\Volt;
 use App\Livewire\HomePage;
 use Laravel\Fortify\Features;
+use App\Livewire\Listing\CreateDeal;
+use App\Livewire\Listing\MyListings;
 use App\Livewire\Listing\EditListing;
 use App\Livewire\Listing\ShowListing;
+use App\Livewire\Listing\ViewListing;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Listing\CreateListing;
 use App\Livewire\Listing\ListingSearchResults;
@@ -38,9 +41,18 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::group(['middleware' => 'auth'], function(){
+    Route::get('listings', MyListings::class)->name('listings.index');
     Route::get('listings/create', CreateListing::class)->name('listings.create');
     Route::get('listings/{id}/edit', EditListing::class)->name('listings.edit');
     Route::get('listings/search', ListingSearchResults::class)->name('listings.search');
-    Route::get('listings/{id}/{slug?}', ShowListing::class)->name('listings.show');
+
+    Route::get('listings/{id}/deal', CreateDeal::class)->name('deals.create');
+
+    Route::get('listings/{id}', ShowListing::class)->name('listings.show');
+
+
 });
+
+
+Route::get('listings/view/{uuid}', ViewListing::class)->name('listings.view'); // @todo : {username}/buying/{uuid}
 
