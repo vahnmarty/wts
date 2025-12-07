@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Listing;
 
-use Auth;
 use App\Models\Deal;
 use App\Models\Listing;
-use Livewire\Component;
-use Filament\Schemas\Schema;
+use Auth;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Schemas\Schema;
+use Livewire\Component;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
 
 class CreateDeal extends Component implements HasSchemas
@@ -28,7 +28,7 @@ class CreateDeal extends Component implements HasSchemas
         $this->listing = $listing;
 
         $this->form->fill([
-            'offer_price' => $listing->start_price
+            'offer_price' => $listing->start_price,
         ]);
     }
 
@@ -37,7 +37,7 @@ class CreateDeal extends Component implements HasSchemas
         return $schema
             ->statePath('data')
             ->components([
-                Section::make('Write a message to the ' . $this->listing->getHost())
+                Section::make('Write a message to the '.$this->listing->getHost())
                     ->schema([
                         Textarea::make('message')
                             ->maxLength(100)
@@ -49,7 +49,7 @@ class CreateDeal extends Component implements HasSchemas
                             ->numeric()
                             ->prefix('₱')
                             ->placeholder('0.00'),
-                    ])
+                    ]),
 
             ]);
     }

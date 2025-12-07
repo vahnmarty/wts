@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ListingType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model
 {
@@ -12,7 +12,7 @@ class Listing extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
-        'listing_type' => ListingType::class
+        'listing_type' => ListingType::class,
     ];
 
     use HasUuids;
@@ -32,25 +32,26 @@ class Listing extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function scopeSearch($query, $keyword){
-        return $query->where('title', 'LIKE', '%' . $keyword . '%')
-            ->orWhere('description', 'LIKE', '%' . $keyword . '%');
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('title', 'LIKE', '%'.$keyword.'%')
+            ->orWhere('description', 'LIKE', '%'.$keyword.'%');
     }
 
     public function getPrice()
     {
-        if($this->price_type == 'FIXED'){
+        if ($this->price_type == 'FIXED') {
             return $this->start_price;
         }
 
-        if($this->price_type == 'RANGE'){
-            return $this->min_price . ' - ' . $this->max_price;
+        if ($this->price_type == 'RANGE') {
+            return $this->min_price.' - '.$this->max_price;
         }
     }
 
     public function getHost()
     {
-        if($this->listing_type == ListingType::SELL){
+        if ($this->listing_type == ListingType::SELL) {
             return 'Seller';
         }
 
@@ -59,11 +60,11 @@ class Listing extends Model
 
     public function getAction()
     {
-        if($this->listing_type == ListingType::SELL){
+        if ($this->listing_type == ListingType::SELL) {
             return 'Buy';
         }
 
-        if($this->listing_type == ListingType::BUY){
+        if ($this->listing_type == ListingType::BUY) {
             return 'Sell';
         }
 
@@ -79,5 +80,4 @@ class Listing extends Model
     {
         return $this->privacy == 'Public';
     }
-
 }

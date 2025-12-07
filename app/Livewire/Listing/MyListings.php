@@ -3,8 +3,8 @@
 namespace App\Livewire\Listing;
 
 use App\Models\Listing;
-use Livewire\Component;
 use Auth;
+use Livewire\Component;
 
 class MyListings extends Component
 {

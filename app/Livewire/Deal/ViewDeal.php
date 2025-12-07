@@ -9,6 +9,7 @@ use Livewire\Component;
 class ViewDeal extends Component
 {
     public Listing $listing;
+
     public Deal $deal;
 
     public function mount($id)

@@ -2,26 +2,22 @@
 
 namespace App\Livewire\Listing;
 
-use Auth;
-use App\Models\Listing;
-use Livewire\Component;
-use App\Models\Category;
-use Illuminate\Support\Str;
 use App\Enums\ListingStatus;
-use Filament\Schemas\Schema;
-use Illuminate\Contracts\View\View;
+use App\Models\Category;
+use App\Models\Listing;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
-use Filament\Schemas\Components\Grid;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Contracts\HasSchemas;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Livewire\Component;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea as CharTextarea;
 use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput as CharTextInput;
 
@@ -52,20 +48,20 @@ class EditListing extends Component implements HasSchemas
                 Grid::make(4)
                     ->schema([
                         Select::make('listing_type')
-                        ->disableLabel()
-                        ->options([
-                            'Sell' => 'I am Selling',
-                            'Buy' => 'I am Buying',
-                            'Swap' => 'I want to Swap'
-                        ])
-                        ->default('Sell')
-                        ->required(),
-                    Select::make('category_id')
-                        ->disableLabel()
-                        ->options(Category::get()->pluck('name', 'id'))
-                        ->required()
-                        ->columnSpan(3)
-                        ->placeholder('Concert Tickets, Sneakers, etc...'),
+                            ->disableLabel()
+                            ->options([
+                                'Sell' => 'I am Selling',
+                                'Buy' => 'I am Buying',
+                                'Swap' => 'I want to Swap',
+                            ])
+                            ->default('Sell')
+                            ->required(),
+                        Select::make('category_id')
+                            ->disableLabel()
+                            ->options(Category::get()->pluck('name', 'id'))
+                            ->required()
+                            ->columnSpan(3)
+                            ->placeholder('Concert Tickets, Sneakers, etc...'),
                     ]),
 
                 CharTextInput::make('title')
@@ -83,7 +79,7 @@ class EditListing extends Component implements HasSchemas
                             ->options([
                                 'FIXED' => 'Fixed Price',
                                 'RANGE' => 'Range Price',
-                                'MONTHLY' => 'Monthly Subscription'
+                                'MONTHLY' => 'Monthly Subscription',
                             ])
                             ->default('FIXED')
                             ->required()
@@ -91,21 +87,21 @@ class EditListing extends Component implements HasSchemas
                         TextInput::make('start_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'FIXED')
+                            ->required(fn (Get $get) => $get('price_type') == 'FIXED')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'RANGE'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'RANGE'),
                         TextInput::make('min_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
+                            ->required(fn (Get $get) => $get('price_type') == 'RANGE')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'FIXED'),
                         TextInput::make('max_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
+                            ->required(fn (Get $get) => $get('price_type') == 'RANGE')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'FIXED'),
                     ]),
                 TextInput::make('reference_url')
                     ->label('Reference URL')
@@ -117,18 +113,18 @@ class EditListing extends Component implements HasSchemas
                     ->columns(1)
                     ->schema([
                         Checkbox::make('is_legal')
-                            ->label("I confirm that the item I’m listing is legal in the Philippines.")
+                            ->label('I confirm that the item I’m listing is legal in the Philippines.')
                             ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('is_legit')
-                            ->label("I certify that this item is not counterfeit, stolen, or prohibited.")
+                            ->label('I certify that this item is not counterfeit, stolen, or prohibited.')
                             ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('terms')
-                            ->label("I agree that violating these terms may result in account suspension.")
+                            ->label('I agree that violating these terms may result in account suspension.')
                             ->accepted()
                             ->dehydrated(false),
-                    ])
+                    ]),
 
             ])
             ->statePath('data');
@@ -144,7 +140,6 @@ class EditListing extends Component implements HasSchemas
         $listing->slug = Str::of($listing->title)->slug('-');
         $listing->status = ListingStatus::OPEN;
         $listing->save();
-
 
         return redirect()->route('listings.show', $listing->id);
     }
@@ -163,12 +158,13 @@ class EditListing extends Component implements HasSchemas
     protected function unrequireFields($component, array $except = []): void
     {
         if ($component instanceof Field) {
-            if (!in_array($component->getName(), $except)) {
+            if (! in_array($component->getName(), $except)) {
                 if ($component->isRequired()) {
                     $component->markAsRequired();
                 }
                 $component->required(false);
             }
+
             return;
         }
 
@@ -182,7 +178,6 @@ class EditListing extends Component implements HasSchemas
         $listing = $this->listing;
         $listing->fill($data);
         $listing->save();
-
 
         return $listing;
     }

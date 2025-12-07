@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ListingStatus : string
+enum ListingStatus: string
 {
     case OPEN = 'open';
     case PENDING = 'pending';

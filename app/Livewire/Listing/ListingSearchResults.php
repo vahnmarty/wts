@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Listing;
 
-use Livewire\Attributes\Url;
 use App\Models\Listing;
-use Livewire\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Contracts\HasSchemas;
-use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class ListingSearchResults extends Component implements HasSchemas
 {
@@ -31,19 +31,15 @@ class ListingSearchResults extends Component implements HasSchemas
             ->components([
                 TextInput::make('q')
                     ->disableLabel()
-                    ->prefixIcon(Heroicon::MagnifyingGlass)
+                    ->prefixIcon(Heroicon::MagnifyingGlass),
             ]);
 
     }
 
-    public function search()
-    {
-
-    }
+    public function search() {}
 
     public function render()
     {
         return view('livewire.listing.listing-search-results');
     }
-
 }

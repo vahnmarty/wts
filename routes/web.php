@@ -1,17 +1,17 @@
 <?php
 
-use Livewire\Volt\Volt;
-use App\Livewire\HomePage;
-use Laravel\Fortify\Features;
 use App\Livewire\Deal\ViewDeal;
+use App\Livewire\HomePage;
 use App\Livewire\Listing\CreateDeal;
-use App\Livewire\Listing\MyListings;
+use App\Livewire\Listing\CreateListing;
 use App\Livewire\Listing\EditListing;
+use App\Livewire\Listing\ListingSearchResults;
+use App\Livewire\Listing\MyListings;
 use App\Livewire\Listing\ShowListing;
 use App\Livewire\Listing\ViewListing;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Listing\CreateListing;
-use App\Livewire\Listing\ListingSearchResults;
+use Laravel\Fortify\Features;
+use Livewire\Volt\Volt;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,12 +40,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
+Route::group(['middleware' => 'auth'], function () {
 
-Route::group(['middleware' => 'auth'], function(){
-
-
-
-    Route::group(['prefix' => 'listings'], function(){
+    Route::group(['prefix' => 'listings'], function () {
         Route::get('/', MyListings::class)->name('listings.index');
         Route::get('/create', CreateListing::class)->name('listings.create');
         Route::get('/{id}/edit', EditListing::class)->name('listings.edit');
@@ -55,14 +52,10 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/{id}', ShowListing::class)->name('listings.show');
     });
 
-    Route::group(['prefix' => 'deals'], function(){
+    Route::group(['prefix' => 'deals'], function () {
         Route::get('/{id}', ViewDeal::class)->name('deals.show');
     });
 
-
-
 });
 
-
 Route::get('listings/view/{uuid}', ViewListing::class)->name('listings.view'); // @todo : {username}/buying/{uuid}
-

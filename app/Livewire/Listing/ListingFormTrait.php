@@ -2,31 +2,20 @@
 
 namespace App\Livewire\Listing;
 
-use Auth;
-use App\Models\Listing;
 use App\Models\Category;
-use Illuminate\Support\Str;
-use App\Enums\ListingStatus;
-use Filament\Schemas\Schema;
-use Illuminate\Contracts\View\View;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Select;
-use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Contracts\HasSchemas;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Concerns\InteractsWithSchemas;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Schemas\Schema;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea as CharTextarea;
 use Schmeits\FilamentCharacterCounter\Forms\Components\TextInput as CharTextInput;
 
-
-trait ListingFormTrait {
-
+trait ListingFormTrait
+{
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -34,20 +23,20 @@ trait ListingFormTrait {
                 Grid::make(4)
                     ->schema([
                         Select::make('listing_type')
-                        ->disableLabel()
-                        ->options([
-                            'Sell' => 'I am Selling',
-                            'Buy' => 'I am Buying',
-                            'Swap' => 'I want to Swap'
-                        ])
-                        ->default('Sell')
-                        ->required(),
-                    Select::make('category_id')
-                        ->disableLabel()
-                        ->options(Category::get()->pluck('name', 'id'))
-                        ->required()
-                        ->columnSpan(3)
-                        ->placeholder('Concert Tickets, Sneakers, etc...'),
+                            ->disableLabel()
+                            ->options([
+                                'Sell' => 'I am Selling',
+                                'Buy' => 'I am Buying',
+                                'Swap' => 'I want to Swap',
+                            ])
+                            ->default('Sell')
+                            ->required(),
+                        Select::make('category_id')
+                            ->disableLabel()
+                            ->options(Category::get()->pluck('name', 'id'))
+                            ->required()
+                            ->columnSpan(3)
+                            ->placeholder('Concert Tickets, Sneakers, etc...'),
                     ]),
 
                 CharTextInput::make('title')
@@ -65,7 +54,7 @@ trait ListingFormTrait {
                             ->options([
                                 'FIXED' => 'Fixed Price',
                                 'RANGE' => 'Range Price',
-                                'MONTHLY' => 'Monthly Subscription'
+                                'MONTHLY' => 'Monthly Subscription',
                             ])
                             ->default('FIXED')
                             ->required()
@@ -73,27 +62,27 @@ trait ListingFormTrait {
                         TextInput::make('start_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'FIXED')
+                            ->required(fn (Get $get) => $get('price_type') == 'FIXED')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'RANGE'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'RANGE'),
                         TextInput::make('min_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
+                            ->required(fn (Get $get) => $get('price_type') == 'RANGE')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'FIXED'),
                         TextInput::make('max_price')
                             ->numeric()
                             ->placeholder('0.00')
-                            ->required(fn(Get $get) => $get('price_type') == 'RANGE')
+                            ->required(fn (Get $get) => $get('price_type') == 'RANGE')
                             ->lazy()
-                            ->disabled(fn(Get $get) => $get('price_type') == 'FIXED'),
+                            ->disabled(fn (Get $get) => $get('price_type') == 'FIXED'),
                     ]),
                 Select::make('privacy')
                     ->label('Privacy Settings')
                     ->options([
                         'public' => 'Public',
-                        'private' => 'Private'
+                        'private' => 'Private',
                     ])
                     ->default('public')
                     ->helperText('When set to Private, only the selected people can see this listing.'),
@@ -107,18 +96,18 @@ trait ListingFormTrait {
                     ->columns(1)
                     ->schema([
                         Checkbox::make('is_legal')
-                            ->label("I confirm that the item I’m listing is legal in the Philippines.")
+                            ->label('I confirm that the item I’m listing is legal in the Philippines.')
                             ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('is_legit')
-                            ->label("I certify that this item is not counterfeit, stolen, or prohibited.")
+                            ->label('I certify that this item is not counterfeit, stolen, or prohibited.')
                             ->accepted()
                             ->dehydrated(false),
                         Checkbox::make('terms')
-                            ->label("I agree that violating these terms may result in account suspension.")
+                            ->label('I agree that violating these terms may result in account suspension.')
                             ->accepted()
                             ->dehydrated(false),
-                    ])
+                    ]),
 
             ])
             ->statePath('data');

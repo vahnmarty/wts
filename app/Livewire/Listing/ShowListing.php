@@ -13,7 +13,6 @@ class ShowListing extends Component
     {
         $listing = Listing::findOrFail($id);
 
-
         $this->authorize('viewAny', $listing);
 
         $this->listing = $listing;

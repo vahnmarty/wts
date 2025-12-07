@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Field;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
-
 use Filament\Tables\Columns\Column;
-use Filament\Forms\Components\Field;
-use Filament\Actions\Action;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
