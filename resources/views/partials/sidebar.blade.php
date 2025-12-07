@@ -1,6 +1,6 @@
 <nav aria-label="Sidebar" class="sticky top-4 divide-y divide-gray-300">
     <div class="space-y-1 pb-8">
-        <x-sidebar-menu-item url="{{  url('dashboard') }}" icon="home">Home</x-sidebar-menu-item>
+        <x-sidebar-menu-item url="{{  url('home') }}" icon="home">Home</x-sidebar-menu-item>
         <x-sidebar-menu-item url="{{  route('listings.index') }}" icon="building-storefront">My Listings</x-sidebar-menu-item>
         <a href="#"
             class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">

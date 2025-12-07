@@ -8,6 +8,7 @@ use App\Models\Listing;
 use Livewire\Component;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
@@ -36,15 +37,19 @@ class CreateDeal extends Component implements HasSchemas
         return $schema
             ->statePath('data')
             ->components([
-                Textarea::make('message')
-                    ->maxLength(100)
-                    ->characterLimit(100)
-                    ->showInsideControl(true)
-                    ->placeholder('Type your message here. e.g. I want to buy your...'),
-                TextInput::make('offer_price')
-                    ->label('Your Offer')
-                    ->numeric()
-                    ->placeholder('0.00')
+                Section::make('Write a message to the ' . $this->listing->getHost())
+                    ->schema([
+                        Textarea::make('message')
+                            ->maxLength(100)
+                            ->characterLimit(100)
+                            ->showInsideControl(true)
+                            ->placeholder('Type your message here. e.g. I want to buy your...'),
+                        TextInput::make('offer_price')
+                            ->label('Your Offer')
+                            ->numeric()
+                            ->prefix('₱')
+                            ->placeholder('0.00'),
+                    ])
 
             ]);
     }
@@ -59,10 +64,13 @@ class CreateDeal extends Component implements HasSchemas
         $deal->offer_price = $data['offer_price'];
         $deal->message = $data['message'];
         $deal->save();
+
+        return redirect()->route('deals.show', $deal->id);
     }
 
     public function render()
     {
-        return view('livewire.listing.create-deal');
+        return view('livewire.listing.create-deal')
+            ->layout('components.layouts.basic');
     }
 }

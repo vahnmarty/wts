@@ -3,6 +3,7 @@
 use Livewire\Volt\Volt;
 use App\Livewire\HomePage;
 use Laravel\Fortify\Features;
+use App\Livewire\Deal\ViewDeal;
 use App\Livewire\Listing\CreateDeal;
 use App\Livewire\Listing\MyListings;
 use App\Livewire\Listing\EditListing;
@@ -16,9 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('dashboard', HomePage::class)
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', HomePage::class)->name('home');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -41,14 +42,23 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('listings', MyListings::class)->name('listings.index');
-    Route::get('listings/create', CreateListing::class)->name('listings.create');
-    Route::get('listings/{id}/edit', EditListing::class)->name('listings.edit');
-    Route::get('listings/search', ListingSearchResults::class)->name('listings.search');
 
-    Route::get('listings/{id}/deal', CreateDeal::class)->name('deals.create');
 
-    Route::get('listings/{id}', ShowListing::class)->name('listings.show');
+
+    Route::group(['prefix' => 'listings'], function(){
+        Route::get('/', MyListings::class)->name('listings.index');
+        Route::get('/create', CreateListing::class)->name('listings.create');
+        Route::get('/{id}/edit', EditListing::class)->name('listings.edit');
+        Route::get('/search', ListingSearchResults::class)->name('listings.search');
+
+        Route::get('/{id}/deal', CreateDeal::class)->name('deals.create');
+        Route::get('/{id}', ShowListing::class)->name('listings.show');
+    });
+
+    Route::group(['prefix' => 'deals'], function(){
+        Route::get('/{id}', ViewDeal::class)->name('deals.show');
+    });
+
 
 
 });

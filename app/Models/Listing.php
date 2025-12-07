@@ -11,7 +11,8 @@ class Listing extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
+        'listing_type' => ListingType::class
     ];
 
     use HasUuids;
@@ -54,6 +55,19 @@ class Listing extends Model
         }
 
         return 'Buyer';
+    }
+
+    public function getAction()
+    {
+        if($this->listing_type == ListingType::SELL){
+            return 'Buy';
+        }
+
+        if($this->listing_type == ListingType::BUY){
+            return 'Sell';
+        }
+
+        return $this->listing_type;
     }
 
     public function isPrivate()
